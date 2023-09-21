@@ -4,16 +4,21 @@ class PinError(Exception):
 
 
 class EntryError(Exception):
-    def  __init__(self, message: object) -> None:
+    def __init__(self, message: object) -> None:
         super().__init__(message)
+
+
+class CustomerException(Exception):
+    def __init__(self, message: object) -> None:
+        super().__init__(message)
+
 
 class AmountLessThanZero(Exception):
 
-    def   __init__(self, message: object) -> None:
+    def __init__(self, message: object) -> None:
         super().__init__(message)
 
 
 class AmountIsGreaterThanBalance(Exception):
     def __init__(self, message: object) -> None:
         super().__init__(message)
-

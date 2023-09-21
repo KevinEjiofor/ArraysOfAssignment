@@ -1,4 +1,4 @@
-from Array.enum_geopolitical_zones import Point
+from array.enum_geopolitical_zones import Point
 
 
 class Point:
