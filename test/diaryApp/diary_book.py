@@ -80,6 +80,7 @@ class DiaryBook:
             DiaryBook.password(password)
 
             if len(user_name) == 0 or len(password) == 0:
+
                 raise ValueError("Username and password cannot be empty.")
 
             DiaryBook.diaries.add_new_user(user_name, password)
@@ -95,9 +96,13 @@ class DiaryBook:
         try:
             menu = DiaryBook.input_method("""
                     1. Create entry
+                    
                     2. Update entry
+                    
                     3. Delete entry
+                    
                     4. Search for entry
+                    
                     5. Log out
                     """)
             choice = menu[0] if menu else ""

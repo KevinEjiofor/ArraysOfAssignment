@@ -12,13 +12,16 @@ class Bank:
         self.account_detail = []
 
     def register(self, firstName, lastName, pin):
+        account_number = self.generate_account_Number()
 
-        new_account = Account(self.generate_account_Number(), f"{firstName} {lastName}", pin)
+        new_account = Account(account_number, f"{firstName} {lastName}", pin)
         self.account_info.append(new_account)
+
+
 
     @staticmethod
     def generate_account_Number():
-        account_number = "23" + f"{random.randint(100000000, 990000000)}"
+        account_number = "23"+f"{random.randint(10000000, 990000000)}"
 
         return account_number
 
@@ -46,6 +49,6 @@ class Bank:
         self.find_account(sender_account_number).withdraw(amount, pin)
         self.find_account(receiver_account_number).deposit(amount)
 
-    def add_new_user(self, user_name, password):
-        new_account_login = Account(user_name, password)
-        self.account_detail.append(new_account_login)
+    # def get_account_number(self):
+    #     return self.generate_account_Number()
+

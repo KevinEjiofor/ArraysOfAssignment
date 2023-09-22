@@ -6,30 +6,30 @@ from test.bankApp.exception import *
 class BankApp:
     bank = Bank("Access_bank")
 
-    def __init__(self):
-        self.user_name = " "
-        self.main_password = " "
-
-    @staticmethod
-    def welcome_page():
+    @classmethod
+    def welcome_page(cls):
         try:
             welcome_display = BankApp.input_method(
-                """
-                WELCOME TO ZIGGY XCHANGE
+                f"""
+            ==============================================================================
+                                    WELCOME TO ZIGGY XCHANGE
+            ===============================================================================   
                 Enter:
-                1-> Register Account
+                             1-> Register Account
 
-                2-> Log in
+                             2-> Transaction section
 
-                3-> Exit
-                """)
+                             3-> Exit
+                              
+                              """)
+
             if welcome_display:
                 choice = welcome_display[0]
                 if choice == "1":
                     BankApp.bank_registration()
 
                 elif choice == "2":
-                    BankApp.bank_log_in()
+                    BankApp.bank_transaction()
 
                 elif choice == "3":
                     BankApp.exit()
@@ -42,8 +42,8 @@ class BankApp:
             BankApp.display_method(str(error))
             BankApp.welcome_page()
 
-    @staticmethod
-    def bank_registration():
+    @classmethod
+    def bank_registration(cls):
         try:
 
             user_name = BankApp.input_method("Kindly enter your first name: ")
@@ -58,28 +58,26 @@ class BankApp:
             payment = BankApp.input_method("Enter payment: ")
             BankApp.pin(payment)
 
-            account_number = BankApp.bank.generate_account_Number()
+            account_number = BankApp
             BankApp.bank.register(user_name, surname, payment)
             BankApp.display_method(f"""
-                        {"=" * 50}
-                          Account Name: {user_name} {surname}
+                        {"=" * 80}
+                        
+                                 Account Name: {user_name} {surname}
                           
-                          Account User name: {user_name}{surname}
+                                 Account Number: {account_number}
                           
-                          Account Number: {account_number}
-                          
-                          Account created successfully!
+                                     Account created successfully!
                             
-                             BASE ON BELIEVE
-                        {"=" * 50}
+                                             BASE ON BELIEVE 
+                        {"=" * 80}
                                 """)
 
             BankApp.user_name = f"{user_name}{surname}"
             BankApp.main_password = password
+            BankApp.welcome_page()
 
-            BankApp.bank_log_in()
-
-        except CustomerException as error:
+        except (TypeError, AmountLessThanZero, AmountLessThanZero, CustomerException)as error:
             BankApp.display_method(str(error))
             BankApp.bank_registration()
 
@@ -108,11 +106,13 @@ class BankApp:
     def validate_name_input(full_name):
         pattern = r"^\D*$"
         if not re.fullmatch(pattern, full_name):
-            raise CustomerException("Invalid name")
+            raise CustomerException("Invalid entry")
 
-    @classmethod
-    def bank_log_in(cls):
-        pass
+    @staticmethod
+    def validate_number_input(number):
+        pattern = r"^\d*$"
+        if not re.fullmatch(pattern, number):
+            raise CustomerException("Invalid entry")
 
     @classmethod
     def exit(cls):
@@ -130,6 +130,121 @@ class BankApp:
         except ValueError as error:
             BankApp.display_method(str(error))
             BankApp.exit()
+
+    @classmethod
+    def bank_transaction(cls):
+        try:
+            menu = BankApp.input_method(f"""
+             
+                 {"=" * 50}
+                            ZIGGY XCHANGE     
+                {"=" * 50}
+                 
+                 Enter:
+            
+                             1-> Balance
+                            
+                             2-> Deposit
+                        
+                             3-> Withdraw
+                        
+                             4->   Transfer
+                             
+                             5-> Home Page
+                           
+                        
+                        """)
+            choice = menu[0] if menu else " "
+
+            if choice == '1':
+                BankApp.balance()
+
+            elif choice == "2":
+                BankApp.deposit()
+
+            elif choice == "3":
+                BankApp.withdraw()
+
+            elif choice == "4":
+                BankApp.transfer()
+
+            elif choice == "5":
+                BankApp.welcome_page()
+
+            else:
+                raise CustomerException("Invalid input. Please select a valid option (1-5).")
+
+        except (TypeError, AmountLessThanZero, AmountLessThanZero, CustomerException)as error:
+            BankApp.display_method(str(error))
+            BankApp.bank_transaction()
+
+    @classmethod
+    def balance(cls):
+        try:
+            account_number = BankApp.input_method("Enter account number:  ")
+            BankApp.validate_number_input(account_number)
+
+            pin = BankApp.input_method("Enter pin: ")
+            BankApp.pin(pin)
+
+            getbalance = BankApp.bank.check_balance(account_number, pin)
+
+            BankApp.display_method(F""""
+                             {"+" * 20}
+                                       
+                                        BALANCE:
+                                                 
+                                                 {getbalance}
+                             
+                             {"+" * 20}
+                                   """)
+            BankApp.bank_transaction()
+        except (TypeError, AmountLessThanZero, AmountLessThanZero, CustomerException)as error:
+            BankApp.display_method(str(error))
+            BankApp.balance()
+
+    @classmethod
+    def withdraw(cls):
+        try:
+            account_number = BankApp.input_method("Enter account number:  ")
+            BankApp.validate_number_input(account_number)
+
+            amount = BankApp.input_method("Enter amount:  ")
+            BankApp.validate_number_input(amount)
+
+            pin = BankApp.input_method("Enter pin: ")
+            BankApp.pin(pin)
+
+            BankApp.bank.withdraw(account_number, amount, pin)
+
+            BankApp.display_method(f"""Your withdrawal of {amount}
+                                            was successful""")
+            BankApp.bank_transaction()
+
+        except (TypeError, AmountLessThanZero, AmountLessThanZero, CustomerException) as error:
+            BankApp.display_method(str(error))
+            BankApp.bank_transaction()
+
+    @classmethod
+    def transfer(cls):
+        pass
+
+    @classmethod
+    def deposit(cls):
+        try:
+            account_number = BankApp.input_method("Enter account number:  ")
+            BankApp.validate_number_input(account_number)
+
+            amount = BankApp.input_method("Enter amount:  ")
+            BankApp.validate_number_input(amount)
+
+            BankApp.bank.deposit(account_number, amount)
+            BankApp.display_method(f"""Your deposit of {amount}
+                                            was successful""")
+
+        except (TypeError, AmountLessThanZero, AmountLessThanZero, CustomerException) as error:
+            BankApp.display_method(str(error))
+            BankApp.bank_transaction()
 
 
 if __name__ == '__main__':

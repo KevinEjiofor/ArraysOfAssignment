@@ -1,6 +1,6 @@
 import unittest
-from bank import *
 
+from test.bankApp.account import *
 from test.bankApp.bank import Bank
 from test.bankApp.exception import *
 
