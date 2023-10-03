@@ -12,6 +12,7 @@ class Account:
     @staticmethod
     def validate_digit_type(amount):
         if type(amount) not in [int, float]:
+
             raise EntryError("invalid entry")
 
     def validatePin(self, pin):

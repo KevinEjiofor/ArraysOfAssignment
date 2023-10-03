@@ -17,11 +17,13 @@ class Bank:
         new_account = Account(account_number, f"{firstName} {lastName}", pin)
         self.account_info.append(new_account)
 
-
+        return account_number
 
     @staticmethod
     def generate_account_Number():
-        account_number = "23"+f"{random.randint(10000000, 990000000)}"
+        # return  str(len(self.account_info) + 1)
+
+        account_number = ''.join([str(random.randint(0, 9)) for _ in range(10)])
 
         return account_number
 
@@ -48,7 +50,4 @@ class Bank:
 
         self.find_account(sender_account_number).withdraw(amount, pin)
         self.find_account(receiver_account_number).deposit(amount)
-
-    # def get_account_number(self):
-    #     return self.generate_account_Number()
 

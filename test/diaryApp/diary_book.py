@@ -16,28 +16,26 @@ class DiaryBook:
             welcome_page = DiaryBook.input_method("""
                 WELCOME
                 LEAVING YOUR IMPACT FOR ETERNITY (LIFE)
+                
+                Enter:
 
-                1. Create a diary account
+                        1. Create a diary account
                 
-                2. Log in
+                        2. Log in
                 
-                3. Exit
+                        3. Exit
                 """)
-
-            if welcome_page:
-                choice = welcome_page[0]
-                if choice == '1':
-                    DiaryBook.diary_user_register()
-                elif choice == '2':
-                    DiaryBook.login()
-                elif choice == '3':
-                    DiaryBook.exit_menu()
-                else:
-                    raise ValueError("Invalid input. Please enter '1 - 3' to create a diary account.")
+            choice = welcome_page if welcome_page else " "
+            if choice == '1':
+                DiaryBook.diary_user_register()
+            elif choice == '2':
+                DiaryBook.login()
+            elif choice == '3':
+                DiaryBook.exit_menu()
             else:
-                raise ValueError("Invalid input. Please enter '1 - 3' to create a diary account.")
+                raise CustomerException("Invalid input. Please enter '1 - 3' to create a diary account.")
 
-        except (ValueError, CustomerException) as error:
+        except CustomerException as error:
             DiaryBook.display_method(str(error))
             DiaryBook.display_welcome_page()
 
@@ -60,9 +58,12 @@ class DiaryBook:
     def login():
         try:
             user = DiaryBook.input_method("Enter user name: ")
+
             user_password = DiaryBook.input_method("Enter password: ")
+
             DiaryBook.user_name = user
             DiaryBook.password = user_password
+
             DiaryBook.diaries.find_user(user).unlock(user_password)
             DiaryBook.main_menu()
 
@@ -80,7 +81,6 @@ class DiaryBook:
             DiaryBook.password(password)
 
             if len(user_name) == 0 or len(password) == 0:
-
                 raise ValueError("Username and password cannot be empty.")
 
             DiaryBook.diaries.add_new_user(user_name, password)
@@ -104,8 +104,10 @@ class DiaryBook:
                     4. Search for entry
                     
                     5. Log out
+                    
+                    6. Exit
                     """)
-            choice = menu[0] if menu else ""
+            choice = menu if menu else ""
 
             if choice == '1':
                 DiaryBook.create_entry()
@@ -117,11 +119,14 @@ class DiaryBook:
                 DiaryBook.find_id()
             elif choice == '5':
                 DiaryBook.logout()
+            elif choice == '6':
+                DiaryBook.exit_()
             else:
                 raise CustomerException("Invalid input. Please select a valid option (1-5).")
 
         except CustomerException as error:
             DiaryBook.display_method(str(error))
+            DiaryBook.main_menu()
 
     @staticmethod
     def logout():
@@ -156,35 +161,28 @@ class DiaryBook:
 
         except CustomerException as error:
             DiaryBook.display_method(str(error))
-            DiaryBook.delete_entry()
+            DiaryBook.main_menu()
 
     @staticmethod
     def update_entry():
         try:
             entry_id = int(DiaryBook.input_method("Enter id: "))
+
             entry = DiaryBook.diaries.find_user(DiaryBook.user_name).find_entry(entry_id)
+
             DiaryBook.display_method(f"Diary with ID {entry_id} found: {entry.get_title()}\n{entry.get_body()}")
+
             title = DiaryBook.input_method("Update title: ")
             body = DiaryBook.input_method("Update body: ")
+
             DiaryBook.diaries.find_user(DiaryBook.user_name).update_entry(entry_id, title, body)
+
             DiaryBook.display_method("Entry updated successfully.")
             DiaryBook.main_menu()
 
         except CustomerException as error:
             DiaryBook.display_method(str(error))
             DiaryBook.main_menu()
-
-    @staticmethod
-    def password(pin):
-        pattern = r"^\d{6}$"
-        if not re.search(pattern, pin):
-            raise CustomerException("Password should be in six digits ")
-
-    @staticmethod
-    def validate_name_input(full_name):
-        pattern = r"^\D*$"
-        if not re.fullmatch(pattern, full_name):
-            raise CustomerException("Invalid name")
 
     @staticmethod
     def create_entry():
@@ -199,6 +197,22 @@ class DiaryBook:
 
         except CustomerException as error:
             DiaryBook.display_method(str(error))
+            DiaryBook.main_menu()
+
+    @classmethod
+    def exit_(cls):
+        try:
+            user = DiaryBook.input_method("\nDo you want to EXIT the diary? Enter Yes/No: ").casefold()
+            if user == "yes":
+                DiaryBook.display_method("Bye!")
+            elif user == "no":
+                DiaryBook.main_menu()
+            else:
+                raise ValueError("\nInvalid input. Please enter 'YES' or 'NO'.")
+
+        except ValueError as error:
+            DiaryBook.display_method(str(error))
+            DiaryBook.main_menu()
 
     @staticmethod
     def input_method(prompt):
@@ -207,6 +221,19 @@ class DiaryBook:
     @staticmethod
     def display_method(prompt):
         print(prompt)
+
+    @classmethod
+    def validate_name_input(cls, user_name):
+        pattern = r"^\D*$"
+        if not re.fullmatch(pattern, user_name):
+            raise CustomerException("Invalid entry")
+
+    @classmethod
+    def password(cls, password):
+        pattern = r'^[a-zA-Z0-9]+$'
+
+        if not re.search(pattern, password):
+            raise CustomerException("Invalid entry1")
 
 
 if __name__ == "__main__":

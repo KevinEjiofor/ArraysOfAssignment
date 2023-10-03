@@ -54,7 +54,8 @@ class TestBankFunctions(unittest.TestCase):
 
         self.bank.transfer("1", "2", 2000, "pin")
 
-        newBalance = self.bank.check_balance("1", "pin")
-        self.assertEquals(4000, newBalance)
-        check_balance_of_the_second_account = self.bank.check_balance("2", "8989")
-        self.assertEquals(2000, check_balance_of_the_second_account)
+        sender_balance = self.bank.check_balance("1", "pin")
+        self.assertEquals(4000, sender_balance)
+        check_balance_of_the_receiver_account = self.bank.check_balance("2", "8989")
+        self.assertEquals(2000, check_balance_of_the_receiver_account)
+
