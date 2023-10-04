@@ -75,15 +75,16 @@ class MenstrualApp:
 
             self.display_message(
                 f"Hello {self.user_name}!\n\n"
-                "Welcome to our menstrual cycle tracking app! We're here to help you gain valuable insights into your menstrual cycle and ovulation patterns.\n\n"
+                "Welcome to our menstrual cycle tracking app! We're here to help you gain valuable insights into your menstrual cycle and ovulation patterns."
                 "It's important to remember that while our app provides valuable information and predictions, no method of tracking or predicting your cycle is foolproof and can guarantee 100% accuracy.\n\n"
                 "The human body is complex, and menstrual cycles can vary from person to person and even from month to month.\n\n"
                 "Our app uses data and algorithms to make predictions based on patterns, but there can be natural variations and unexpected factors that influence your cycle.\n\n"
                 "We encourage you to use this app as a helpful tool for understanding your body and planning various aspects of your life, such as fertility, period dates, and more. However, always consult with healthcare professionals for important decisions related to your health and family planning.\n\n"
-                "Remember, our goal is to empower you with knowledge and insights, but your health and well-being are of utmost importance.\n\n"
-                "Use this app as a valuable resource, but make informed decisions based on your unique circumstances.\n\n"
-                "Thank you for choosing our app, and we're here to support you on your journey of self-awareness and health management."
+                "Remember, our goal is to empower you with knowledge and insights, but your health and well-being are of utmost importance."
+
             )
+            self.display_message("Use this app as a valuable resource, but make informed decisions based on your unique circumstances."
+                "Thank you for choosing our app, and we're here to support you on your journey of self-awareness and health management.")
 
             self.menu_page()
 
@@ -132,7 +133,7 @@ class MenstrualApp:
             end_menstruation = datetime.strptime(end_menstruation_, "%Y-%m-%d").date()
 
             status = self.cycles.period_length_status(start_menstruation, end_menstruation)
-            self.display_message(f"{self.user_name} your period status: {status}")
+            self.display_message(f"{self.user_name} your period status is {status}")
 
         except (ValueError, TypeError) as e:
             self.display_message("Invalid date format. Please enter the date in yyyy-MM-dd format.")

@@ -9,7 +9,7 @@ class Bank:
 
         self.bank_name = bank_name
         self.account_info = []
-        self.account_detail = []
+        # self.account_detail = []
 
     def register(self, firstName, lastName, pin):
         account_number = self.generate_account_Number()

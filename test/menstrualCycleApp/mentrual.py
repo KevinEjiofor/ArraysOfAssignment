@@ -22,9 +22,9 @@ class MenstrualCycle:
 
     def cycle_length_status(self):
         if 21 <= self.cycle_length <= 35:
-            self.cycle_status = "Normal"
+            self.cycle_status = "NORMAL"
         else:
-            raise ValueError("This is NOT NORMAL. Please consult a doctor.")
+            raise ValueError("This is NOT NORMAL. Kindly consult a doctor.")
         return self.cycle_status
 
     def set_start_menstruation(self, start_menstruation):
@@ -59,7 +59,7 @@ class MenstrualCycle:
         period_length = (end_menstruation - start_menstruation).days
 
         if period_length <= 0 or period_length > 7:
-            raise ValueError("This is NOT NORMAL. Please consult a doctor.")
+            raise ValueError("This is NOT NORMAL. Kindly consult a doctor.")
         else:
-            return "Normal"
+            return "NORMAL"
 
